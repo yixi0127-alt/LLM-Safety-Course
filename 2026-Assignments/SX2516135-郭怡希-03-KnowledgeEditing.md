@@ -72,7 +72,7 @@
 | 泛化性 (PS) | 7/10 | 70% |
 | 局部性 (NS) | 9/10 | 90% |
 
-输出文件：`results/rome_results.json`。失败案例：第6条（火星改为木星）编辑失败，模型仍输出 Mars；第9条（尼罗河改为亚马逊）编辑成功但 locality 中的“第二长河”被误改为 Nile。
+输出文件：`results/rome_results.json`。
 
 ### Task 3：MEMIT 批量编辑
 
@@ -107,8 +107,8 @@ ROME 与 MEMIT 在 10 条测试集上表现相近，但 MEMIT 能够一次性编
 ## 五、失败案例分析
 
 1. **ROME 编辑失败**：第6条 “The planet known as the Red Planet is” 修改为 “Jupiter” 后，模型仍输出 “Mars”。可能原因是 subject “Red Planet” 在 prompt 中不是完整名词短语，ROME 定位偏差。
-2. **泛化失败**：编辑 “The capital of France is London” 后，同义改写 “What is the capital city of France?” 仍输出 “Paris”，说明模型未完全迁移知识到不同问法。
-3. **局部性破坏**：编辑 “The longest river in the world is Amazon” 后，询问 “The second longest river in the world is” 时，模型从正确的 “Amazon” 变为 “Nile”，破坏了知识簇。
+2. **泛化失败**：针对第2条事实，编辑 “The chemical symbol for gold is Go” 后，同义改写 “What is the element symbol for gold?” 仍输出原始的 ground_truth “Au”，说明模型未完全将新知识迁移到不同的提问方式上。
+3. **编辑失败且局部性破坏**：针对第9条事实，尝试将“世界最长河流”修改为“Amazon”失败（直接 prompt 仍输出 “Nile”）。更严重的是，在此次编辑后，询问 “The second longest river in the world is” 时，模型也将原本正确的答案错误地改成了 “Nile”，说明该知识簇在编辑计算过程中受到了负面干扰。
 
 ## 六、结论
 
